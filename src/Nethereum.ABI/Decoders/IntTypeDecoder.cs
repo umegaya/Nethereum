@@ -67,6 +67,31 @@ namespace Nethereum.ABI.Decoders
             return DecodeBigInteger(hexString.HexToByteArray());
         }
 
+        private bool IsZeroFilled(byte[] bs) {
+            int byteLength = bs.Length;
+            int base64Length = byteLength >> 3;
+            int remainingBytes = byteLength & 0x7;
+            unsafe {
+                fixed (byte* pByteBuffer = bs) {
+                    ulong* pBuffer = (ulong*)pByteBuffer;
+                    int index = 0;
+                    while (index < base64Length) {
+                        if (pBuffer[index] != 0) {
+                            return false;
+                        }
+                        index++;
+                    }
+                }
+            }
+            int startRemainingBytes = (base64Length << 3);
+            for (int i = startRemainingBytes; i < byteLength; i++) {
+                if (bs[i] != 0) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         public BigInteger DecodeBigInteger(byte[] encoded)
         {
             var negative = false;
@@ -86,6 +111,11 @@ namespace Nethereum.ABI.Decoders
                 return new BigInteger(encoded) -
                        new BigInteger(
                            "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff".HexToByteArray()) - 1;
+
+            if (IsZeroFilled(encoded)) {
+                //more than 2 bytes zero filled array causes IndexOutOfRangeException below
+                encoded = new byte[] { 0 };
+            }
 
             return new BigInteger(encoded);
         }
