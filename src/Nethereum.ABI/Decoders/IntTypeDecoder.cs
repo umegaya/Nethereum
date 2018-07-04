@@ -69,22 +69,7 @@ namespace Nethereum.ABI.Decoders
 
         private bool IsZeroFilled(byte[] bs) {
             int byteLength = bs.Length;
-            int base64Length = byteLength >> 3;
-            int remainingBytes = byteLength & 0x7;
-            unsafe {
-                fixed (byte* pByteBuffer = bs) {
-                    ulong* pBuffer = (ulong*)pByteBuffer;
-                    int index = 0;
-                    while (index < base64Length) {
-                        if (pBuffer[index] != 0) {
-                            return false;
-                        }
-                        index++;
-                    }
-                }
-            }
-            int startRemainingBytes = (base64Length << 3);
-            for (int i = startRemainingBytes; i < byteLength; i++) {
+            for (int i = 0; i < byteLength; i++) {
                 if (bs[i] != 0) {
                     return false;
                 }

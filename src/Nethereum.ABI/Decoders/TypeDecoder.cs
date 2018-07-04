@@ -18,6 +18,8 @@ namespace Nethereum.ABI.Decoders
             if (!encoded.StartsWith("0x"))
                 encoded = "0x" + encoded;
 
+            UnityEngine.Debug.Log("encoded:" + encoded);
+
             return Decode(encoded.HexToByteArray(), type);
         }
 

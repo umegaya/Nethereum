@@ -73,12 +73,12 @@ namespace Nethereum.RPC.TransactionManagers
 
         protected void SetDefaultGasPriceAndCostIfNotSet(TransactionInput transactionInput)
         {
-            if (DefaultGasPrice != -1)
+            if (DefaultGasPrice != default(BigInteger))
             {
                 if (transactionInput.GasPrice == null) transactionInput.GasPrice = new HexBigInteger(DefaultGasPrice);
             }
 
-            if (DefaultGas != null)
+            if (DefaultGas != default(BigInteger))
             {
                 if (transactionInput.Gas == null) transactionInput.Gas = new HexBigInteger(DefaultGas);
             }

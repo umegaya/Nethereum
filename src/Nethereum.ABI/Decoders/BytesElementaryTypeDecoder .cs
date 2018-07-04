@@ -18,7 +18,7 @@ namespace Nethereum.ABI.Decoders
 
             var returnArray = encoded.Take(_size).ToArray();
 
-            if (_size == 1 && type == typeof(byte))
+            if (_size == 1 && (type == typeof(byte) || type == typeof(object)))
             {
                 return returnArray[0];
             }
@@ -38,7 +38,7 @@ namespace Nethereum.ABI.Decoders
 
         public override bool IsSupportedType(Type type)
         {
-            if (_size == 1) return (type == typeof(byte[]) || type == typeof(byte));
+            if (_size == 1) return (type == typeof(byte[]) || type == typeof(byte) || type == typeof(object));
             if (_size == 16) return (type == typeof(byte[]) || type == typeof(Guid));
             return (type == typeof(byte[]));
         }
