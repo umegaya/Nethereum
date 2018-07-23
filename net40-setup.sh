@@ -23,11 +23,15 @@ libs=(
 	ABI
 	JsonRpc.Client
 	RPC
-	Unity
 	Contracts
+	Unity
 )
 
 for lib in "${libs[@]}" ; do
 	make -C src/Nethereum.${lib} NETHEREUM_LIBDIR=../../${OUT}
+	if [ $? -ne 0 ]; then
+		echo "build ${lib} fails"
+		exit $?
+	fi
 	mv src/Nethereum.${lib}/Nethereum.${lib}.dll ${OUT}
 done

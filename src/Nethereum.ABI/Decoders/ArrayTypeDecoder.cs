@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
+using UnityEngine;
+
 namespace Nethereum.ABI.Decoders
 {
     public class ArrayTypeDecoder : TypeDecoder
@@ -33,7 +35,8 @@ namespace Nethereum.ABI.Decoders
 
         public override Type GetDefaultDecodingType()
         {
-            return typeof(List<object>);
+            Type generic = typeof(List<>);
+            return generic.MakeGenericType(ElementType.GetDefaultDecodingType());
         }
 
         public override bool IsSupportedType(Type type)
