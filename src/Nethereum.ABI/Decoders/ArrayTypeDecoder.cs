@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-using UnityEngine;
-
 namespace Nethereum.ABI.Decoders
 {
     public class ArrayTypeDecoder : TypeDecoder

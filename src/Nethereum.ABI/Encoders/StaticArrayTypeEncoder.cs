@@ -8,11 +8,9 @@ namespace Nethereum.ABI.Encoders
     public class StaticArrayTypeEncoder : ArrayTypeEncoder
     {
         private readonly int arraySize;
-        private readonly ABIType elementType;
 
-        public StaticArrayTypeEncoder(ABIType elementType, int arraySize)
+        public StaticArrayTypeEncoder(ABIType elementType, int arraySize) : base(elementType)
         {
-            this.elementType = elementType;
             this.arraySize = arraySize;
         }
 
@@ -21,10 +19,7 @@ namespace Nethereum.ABI.Encoders
             if (l.Count != arraySize)
                 throw new Exception("List size (" + l.Count + ") != " + arraySize);
 
-            var elems = new byte[arraySize][];
-            for (var i = 0; i < l.Count; i++)
-                elems[i] = elementType.Encode(l[i]);
-            return ByteUtil.Merge(elems);
+            return EncodeListCommon(l, null);
         }
     }
 }
